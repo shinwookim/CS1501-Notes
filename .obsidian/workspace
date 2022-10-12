@@ -4,11 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "bb481191b6a9294a",
+        "id": "ada5acb2bcd44bf4",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "Week 7 Lecture.md",
+            "mode": "source",
+            "source": false
+          }
         }
       }
     ],
@@ -57,7 +61,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "c5e4bc8377206dbd",
@@ -73,6 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Week 7 Lecture.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,6 +95,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Week 7 Lecture.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -110,7 +117,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Week 7 Lecture.md"
+              }
             }
           }
         ]
@@ -120,10 +129,13 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "02923c8728cbab07",
+  "active": "ada5acb2bcd44bf4",
   "lastOpenFiles": [
-    "Untitled.md",
+    "Week 6 Lecture.md",
+    "Week 7 Lecture.md",
+    "Week 12 Lecture.md",
     "Week 1 Lecture.md",
+    "Untitled.md",
     "README.md"
   ]
 }
