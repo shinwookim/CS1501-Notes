@@ -4,12 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "ada5acb2bcd44bf4",
+        "id": "413ab3dbce869436",
         "type": "leaf",
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Week 7 Lecture.md",
+            "file": "Week 2 Lecture.md",
             "mode": "source",
             "source": false
           }
@@ -61,8 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "c5e4bc8377206dbd",
@@ -78,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Week 7 Lecture.md",
+                "file": "Week 2 Lecture.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -95,7 +94,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Week 7 Lecture.md",
+                "file": "Week 2 Lecture.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,24 +117,28 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Week 7 Lecture.md"
+                "file": "Week 2 Lecture.md"
               }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
-  "active": "ada5acb2bcd44bf4",
+  "active": "413ab3dbce869436",
   "lastOpenFiles": [
-    "Week 6 Lecture.md",
-    "Week 7 Lecture.md",
-    "Week 12 Lecture.md",
     "Week 1 Lecture.md",
+    "Week 2 Lecture.md",
+    "Untitled 1.md",
     "Untitled.md",
-    "README.md"
+    "Assets/Week1/ThreeSum_Code_Highlight.png",
+    "Assets/Week1/SearchSpace.png",
+    "Assets/Week1/Boggle.png",
+    "Assets/Week1/OrdersOfGrowthGraph.png",
+    "Assets/Week1.md",
+    "Week 5 Lecture.md"
   ]
 }
