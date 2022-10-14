@@ -1,4 +1,4 @@
-# Week 1: Intro Materials + Search, Pruning, Recursion, and Backtracking
+# Week 1: Intro Materials + Pruning, Recursion, and Backtracking
 ## Modeling Runtime of Algorithms
 ### Example: ThreeSum Problem
 Consider the ThreeSum Problem: Given a set of arbitrary integers find out how many **distinct** triples sum to exactly zero.
