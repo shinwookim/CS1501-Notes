@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "f70c07582b9346e0",
+        "id": "4492b64de58809d3",
         "type": "tabs",
         "children": [
           {
-            "id": "ddd7f868ad9a6800",
+            "id": "f85b0658625741dc",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Week 5 Lecture.md",
+                "file": "Week 7 Lecture.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Week 5 Lecture.md",
+                "file": "Week 7 Lecture.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Week 5 Lecture.md",
+                "file": "Week 7 Lecture.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Week 5 Lecture.md"
+                "file": "Week 7 Lecture.md"
               }
             }
           }
@@ -139,17 +139,17 @@
   "ribbon": {
     "mostRecentAction": ""
   },
-  "active": "ddd7f868ad9a6800",
+  "active": "02923c8728cbab07",
   "lastOpenFiles": [
+    "Assets/Week7/BWTransform.png",
+    "Week 7 Lecture.md",
     "Week 6 Lecture.md",
+    "Assets/Week6/HuffmanStoring.png",
     "Week 5 Lecture.md",
+    "Assets/Week6/HuffmanEncodingEg.png",
+    "Pasted image 20221015151202.png",
     "Week 2 Lecture.md",
     "Week 1 Lecture.md",
-    "README.md",
-    "Assets/Week5/DLB.png",
-    "Assets/Week5/RWayRST.png",
-    "Week.md",
-    "Assets/Week5/RST.png",
-    "Assets/Week5/DST.png"
+    "README.md"
   ]
 }

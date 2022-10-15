@@ -114,11 +114,16 @@ Note since $R$ can vary, in implementing an R-way RST, we can use an array of no
 |Multi-way RST| $\theta(w)$|$\theta(w)$|$\log_R(n)$|
 
 
+
 ### Drawbacks of RST
 Considering 8-bit ASCII, each node contains $2^8$ references. This is especially problematic as in many cases, a lot of this space is unused and wasted. For example, if many keys share a prefix—such as all keys begin with `key`—the 25 nodes of the first 3 nodes will be unused. At the lower level however, most keys have probably separated out and refence lists will be sparse
 
+### Number of Bits to Use for Representing Keys
+Typically, the number of bits is determined by the application (e.g., keys are Pitt usernames, PeopleSoft IDs, English sentences, etc.). When it is not, it is better to re-encode the keys to have a bit length of $\log n$ bits each. However, this requires extra space to store the mapping from old keys to new keys and sometimes it is simply not possible. Any better yet, we can assign bit lengths based on frequency of access. This means we will have shorter bitstrings for more  frequently accessed keys, which results in smaller average search time.
+
 ## De La Briandais Tries (DLB)
-To get over this draw back, we can replace the array inside the node of R-way trie with linked-list.
+To get over this draw back, we can replace the array inside the node of R-way trie with linked-list. This is called a De La Briandais Tries (DLB). A DLB is a tree like structure used for searching when keys are sequences of characters. Here, each nodelet stores one character, points to a sibling (linked list of siblings), and points to a child.
+
 ![DLB.png](Assets/Week5/DLB.png)
 ### Adding to DLB
 ```PSEUDOCODE
@@ -154,7 +159,7 @@ private class DLBNode
 ```
 
 ### Analysis of DLB
-So how does the DLB compare to R-way tries? Recognize that we still have to go through all the letters ($w$), but now we may need to traverse all characters of the linked list($R$) which is in linear time. Therefore we have $\theta(w\cdot R)$ for insertion. The DLB is slower asymptotically than the R-way RST (which uses an array with constant access time), however we are saving space by using linked list (we don't need to hold references for characters we do not use).
+So how does the DLB compare to R-way tries? Recognize that we still have to go through all the letters ($w$), but now we may need to traverse all characters of the linked list($R$) which is in linear time. Therefore we have $\theta(w\cdot R)$ for insertion. The DLB is slower asymptotically than the R-way RST (which uses an array with constant access time), however we are saving space by using linked list (we don't need to hold references for characters we do not use). To avoid the worst case, we will typically only use the DLB when the list of siblings are short.
 
 So if we know that the set of keys are going to be dense (that is key spans all characters), using an R-way RST will be beneficial. Conversely, if the key is not dense (that is many share a common prefix), using a DLB will help us save space.
 
