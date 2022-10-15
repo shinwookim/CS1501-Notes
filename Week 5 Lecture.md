@@ -32,12 +32,12 @@ The DST's runtime is $O(b)$, where $b:=\text{bit length of the target or inserte
 The DST is more simple to implement than a RB-BST, and since we are not comparing key values, we can use equality comparisons against the full key (which is better than `compareTo()` in BST).
 
 ## Radix Search Trie
-Although DSTs are great, we can in fact make our self-balancing tree much simpler using a **Radix Search Trie**. The *trie* comes from re*trie*ve and is pronounced as "*try*". In a RST, we store the keys implicitly as paths down the tree instead of storing them inside nodes in the tree. Unlike DSTs, the interior nodes of the trie do not store values. They exists simply to direct us according to the bitstring of the key. The values are instead only at the leaf nodes(end of key's bitstring path). By doing this, an RST uses less space than BST or DST.
+Although DSTs are great, we can in fact make our self-balancing tree much simpler using a **Radix Search Trie**. The *trie* comes from re*trie*ve and is pronounced as "*try*". In a RST, we store the keys implicitly as paths down the tree instead of storing them inside nodes in the tree. Unlike DSTs, the interior nodes of the trie do not store values. They exists simply to direct us according to the bitstring of the key. The values are instead only at the leaf nodes(end of key's bitstring path). By doing this, an RST uses less space than BST or DST. A key difference between tries and trees are that tries do not store the key in the node whereas trees do.
 ![RST.png](Assets/Week5/RST.png)
 ### Adding to RST
 Given a key and a corresponding value, adding to an RST is rather simple. 
 ```PSEUDOCODE
-If (root == null) root = new Node(key, value);
+if (root == null) root = new Node(key, value);
 Else 
 {
 	current_node = root;
@@ -86,6 +86,9 @@ When we are searching, we must always traverse to the end of the bitstring. That
 
 An RST can work with non-integer keys. For example, if we have a key of `char`s, we can treat them the same way as 8-bit integers (assuming ASCII). 
 
+Generally, DST and RST are efficient in checking if a target key is a prefix of any of the keys in the tree. DSTs are preferred over BSTs when bits of keys are randomly distributed (i.e., the probability of each bit being zero is 0.5) The DST will be balanced in this case without having to use the more complicated Red-Black BST. RSTs are preferred over BSTs when bit lengths of keys are close to $\log (n)$. The RST will be balanced in this case without having to use the more complicated Red-Black BST. However, note that the DST and RST don’t provide the extra operations (e.g., predecessor and successor) provided by BST.
+
+
 ## R-way RST
 However, if we have a key of `String`s, we may have huge bit lengths which may make our search very slow. To overcome this, we can consider a character at a time instead of bits in a string. That means instead of 2 children per node, we will have upto $r$ children where $r$ is the alphabet size. This is called an **R-way Radix Search Tries** or *Multi-way Radix Search Tries*.
 ![RWayRST.png](Assets/Week5/RWayRST.png)
@@ -101,7 +104,7 @@ for (each char c in key)
 }
 if (at last char of key) insert value to currNode
 ```
-### Analysis R-way Radix Search Trie
+### Analysis of R-way Radix Search Trie
 Note that each node can have at most 26 children. So the runtime would be $O(w)$ where $w$ is the character length of the string. This is a major improvement for RSTs with string keys because $w < b$ which reduces the height of the tree. Also $w=\lceil\frac{b}{\log{R}}\rceil$ where $R$ is the alphabet size, which means for a binary RST $h=\log_2(n)$ where for R-way RST $h=\log_R{(n)}$. In the case of a search miss, we require an average of $\log_R(n)$ nodes to be examined. Thus, our search miss time is decreased significantly. For example, if we consider a tree with $2^{20}$ keys, an Binary RST yields a height of $\log_2{2^{20}}=20$ whereas an 8-bit R-way RST yields $\log_{256}{2^{20}}=2.5$. 
 
 Note since $R$ can vary, in implementing an R-way RST, we can use an array of nodes (size $R$) to holds references to the children.
@@ -110,11 +113,26 @@ Note since $R$ can vary, in implementing an R-way RST, we can use an array of no
 |Binary RST| $\theta(b)$ | $\theta(b)$ | $\theta(\log_2{n})$ *on average*|
 |Multi-way RST| $\theta(w)$|$\theta(w)$|$\log_R(n)$|
 
+
 ### Drawbacks of RST
 Considering 8-bit ASCII, each node contains $2^8$ references. This is especially problematic as in many cases, a lot of this space is unused and wasted. For example, if many keys share a prefix—such as all keys begin with `key`—the 25 nodes of the first 3 nodes will be unused. At the lower level however, most keys have probably separated out and refence lists will be sparse
 
 ## De La Briandais Tries (DLB)
-To get over this draw back, we can replace the array inside the node of R-way trie with linked-list. There are two alternative implementation to DLBs:
+To get over this draw back, we can replace the array inside the node of R-way trie with linked-list.
+![DLB.png](Assets/Week5/DLB.png)
+### Adding to DLB
+```PSEUDOCODE
+current node = root;
+if (root is null) set root to new node
+for (each character c in the key)
+{
+	look up c in the linked list with current as first node
+	if (not found)  create new node and attatch to linked list
+	if (found) move to the child of the found node
+	if (at last character of key) insert value into current node and return
+}
+```
+There are two alternative implementation to DLBs:
 1. If search terminates on a node with non-null value, key is found; otherwise key is not found
 ```Java
 private class DLBNode
@@ -134,3 +152,30 @@ private class DLBNode
 	private Node child;
 }
 ```
+
+### Analysis of DLB
+So how does the DLB compare to R-way tries? Recognize that we still have to go through all the letters ($w$), but now we may need to traverse all characters of the linked list($R$) which is in linear time. Therefore we have $\theta(w\cdot R)$ for insertion. The DLB is slower asymptotically than the R-way RST (which uses an array with constant access time), however we are saving space by using linked list (we don't need to hold references for characters we do not use).
+
+So if we know that the set of keys are going to be dense (that is key spans all characters), using an R-way RST will be beneficial. Conversely, if the key is not dense (that is many share a common prefix), using a DLB will help us save space.
+
+
+
+
+## Runtime Comparison for Search Trees/Tries
+| Implementation    | Runtime for Search Hit | Runtime for Search Miss (Average) | Runtime for Insert    |
+|:-----------------:|:----------------------:|:---------------------------------:|:---------------------:|
+| BST               | $\theta(n)$            | $\theta(\log n)$                  | $\theta(n)$           |
+| RB-BST            | $\theta(\log n)$       | $\theta(\log n)$                  | $\theta(\log n)$      |
+| DST               | $\theta(b)$            | $\theta(\log n)$                  | $\theta(b)$           |
+| RST               | $\theta(b)$            | $\theta(\log n)$                  | $\theta(b)$           |
+| R-way RST         | $\theta(w)$            | $\theta(\log_R n)$                | $\theta(w)$           |
+| DLB               | $\theta(w\cdot R)$     | $\theta(\log_R n \cdot R)$        | $\theta(w\cdot R)$    |
+
+
+
+
+
+
+
+
+

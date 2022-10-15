@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "cfa2a1804a1ca84a",
+        "id": "f70c07582b9346e0",
         "type": "tabs",
         "children": [
           {
-            "id": "c84600c593a03f3a",
+            "id": "ddd7f868ad9a6800",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -139,17 +139,17 @@
   "ribbon": {
     "mostRecentAction": ""
   },
-  "active": "c84600c593a03f3a",
+  "active": "ddd7f868ad9a6800",
   "lastOpenFiles": [
-    "Assets/Week5/RWayRST.png",
-    "Week 5 Lecture.md",
     "Week 6 Lecture.md",
+    "Week 5 Lecture.md",
     "Week 2 Lecture.md",
+    "Week 1 Lecture.md",
+    "README.md",
+    "Assets/Week5/DLB.png",
+    "Assets/Week5/RWayRST.png",
     "Week.md",
     "Assets/Week5/RST.png",
-    "Assets/Week5/DST.png",
-    "Week 4 Lecture.md",
-    "Week 3 Lecture.md",
-    "Searching Problem.md"
+    "Assets/Week5/DST.png"
   ]
 }

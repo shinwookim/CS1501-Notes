@@ -1,4 +1,4 @@
-# Notes for `CS1501`: Algorithms and Data Structures II
+# Notes for **CS1501: Algorithms and Data Structures II**
 + Instructor: Dr. Sherif Khattab, University of Pittsburgh
 ## Course Description
 This course covers a broad range of data structures and algorithms. Some examples include data structures and algorithms for searching and compression, graph data structures and algorithms, and big integer algorithms and encryption. The students will implement and test several algorithms. The course is programming intensive using the Java programming language.

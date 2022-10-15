@@ -1,3 +1,4 @@
+# Week 6: Compression
 # Shannon's Entropy
 - Measure how much data is unpredictable
 - H(c)=$-1 \times \log_2{Pr(c)}$
