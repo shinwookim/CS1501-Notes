@@ -29,7 +29,7 @@ However, we know that in the worst case, the backtracking algorithm must visit e
 
 #### Calculating the Number of Nodes
 So let's first calculate the number of nodes.
-![Tree_Analysis.png](Week2/Tree_Analysis.png)
+![Tree Analysis.png](Week2/Tree_Analysis.png)
 **Maximum Number of Nodes** (Worst Case) $= 1 +16 \times (1+8+8^2+8^3+...+8^{15})$
 We can use theta($\theta$) notation to simplify: Maximum Number of Nodes = $1+\theta(\text{largest term})=1+16\times\theta(8^{15})$.
 
@@ -191,6 +191,7 @@ public class BinaryNode<T> {
 		return 1 + max;
 	}
 	// Again, recursion
+	// Note that this is a shallow copy because the data is pointing to the same data.
 	public BinaryNode<T> copy(){
 		BinaryNode<T> newRoot = new BinaryNode<>(data);
 		if(left != null){
@@ -203,3 +204,172 @@ public class BinaryNode<T> {
 	}
 }
 ```
+Now that we have the node, let's build the actual tree.
+```Java
+public class BinaryTree < T > implements BinaryTreeInterface < T > {
+	private BinaryNode < T > root;
+	// Implementation Here
+}
+```
+Notice that we are implementing a `BinaryTreeInterface` which means we'll have to implement all methods of the Interface.
+
+Our default constructor just sets the `root` to `null`
+```Java
+ public BinaryTree() {
+	root = null;
+}
+```
+1. The `setRoot(BinaryNode <T> root)` sets the root node to the given node
+2. The `getRoot()` method returns the root
+3. The `getRootData()` method returns the data of the root
+4. The `getHeight()` methods returns the height of the tree. Recall that the `BinaryNode` class already has a `getHeight()` method, so we can simplify our implementation by using it.
+5. The `getNumberOfNodes()` methods returns the height of the tree. Recall that the `BinaryNode` class already has a `getNumberOfNodes()` method, so we can simplify our implementation by using it.
+6. `isEmpty()` returns boolean value depending on when the tree is empty. Notice that if the tree is empty, the `root` will be `null`
+7. Conversely, we can `empty()` a tree by setting the `root` to `null`. (Root will be garbage collected, including the subtrees)
+```Java
+protected void setRoot(BinaryNode < T > root) {
+	this.root = root;
+}
+protected BinaryNode < T > getRoot() {
+	return root;
+}
+public T getRootData() throws EmptyTreeException {
+	// We must account for the special case when the root is null (empty tree).
+	if (root == null)
+		throw new EmptyTreeException("Empty tree");
+	return root.getData();
+}
+public int getHeight() throws EmptyTreeException {
+	if (root == null)
+		throw new EmptyTreeException("Empty tree");
+	// We use the `getHeight()` method of the BinaryNode class.
+	return root.getHeight();
+}
+public int getNumberOfNodes() throws EmptyTreeException {
+	if (root == null)
+		throw new EmptyTreeException("Empty tree");
+	// We use the `getNumberOfNodes()` method of the BinaryNode class.
+	return root.getNumberOfNodes();
+}
+public boolean isEmpty() {
+	return root == null;
+}
+public void clear() {
+	root = null;
+}
+```
+#### Building the Tree
+But how do we actually build a tree? We can use the `buildTree()` method.
+```Java
+private void privateBuildTree(T rootData, BinaryTree <T> leftTree, BinaryTree <T> rightTree) {
+	root = new BinaryNode <> (rootData);
+	if ((leftTree != null) && (!leftTree.isEmpty())) {
+		root.setLeftChild(leftTree.getRoot());
+	}
+	if ((rightTree != null) && (!rightTree.isEmpty())) {
+		if (leftTree == rightTree) {
+			root.setRightChild(rightTree.getRoot().copy());
+		} else {
+			root.setRightChild(rightTree.getRoot());
+		}
+	}
+	if ((leftTree != null) && (leftTree != this)) {
+		leftTree.clear();
+	}
+	if ((rightTree != null) && (rightTree != this)) {
+		rightTree.clear();
+	}
+}
+```
+`privateBuildTree(T rootData, BinaryTree <T> leftTree, BinaryTree <T> rightTree)` does three things:
+1. Create a new `BinaryNode` which will act as our `root` (`root = new BinaryNode <> (rootData);`)
+2. Link the `root` to the left subtree (if it is not `null`)  - `root.left = leftTree.root;`
+3. Link the `root` to the right subtree (if it is not `null`) - `root.right = rightTree.root;`
+However we must also act to prevent client direct access to our subtrees (to ensure encapsulation). We don't want the client to be able to directly access our subtrees. For example, if the client envokes `privateBuildTree(data, treeA, treeB)`, the shouldn't be able to reference the left subtree with `treeA` and the right subtree with `treeB` after the `privateBuildTree` ends.
+
+To do this, we can try setting `treeA = null;` and `treeB = null;`. However, this approach will not work because we can't access `treeA` and `treeB` from within the method (they our outside variables). What if we set `leftTree = rightTree = null;`? This has no effect on client access.
+
+Instead we can set the root node of each subtree to be null: (`leftTree.root = null; rightTree.root = null;`). In this case, `treeA` and `treeB` will still be able to access the original `BinaryTree` objects, they will not be able to access the new `BinaryNode` classes and thus won't be able to access the new tree. Note that this can be done easily using the `clear()` method.
+
+We now must consider the special case when `treeA == treeB`. This means that the `leftTree` and `rightTree` will point to the same BinaryTree. If we are not careful, the `root`'s left child and right childs will point to the same single node. Thus, it will not be a valid tree (In a tree every node must have a single parent). So how can we handle this case? We can copy the subtree, assign the left to the original, and right to the copy.
+
+Another special case may be if `treeA == this` or `treeB == this`. If we are not careful, when we call `clear()`, we will destory the tree we are calling. Thus we must make a comparison to ensure we are not `clear()`ing our own tree.
+
+Note that `privateBuildTree(...)` can be called from multiple methods:
+```Java
+public BinaryTree(T rootData) {
+	privateBuildTree(rootData, null, null);
+}
+public BinaryTree(T rootData, BinaryTree < T > leftTree,
+	BinaryTree < T > rightTree) {
+	privateBuildTree(rootData, leftTree, rightTree);
+}    
+public void buildTree(T rootData) {
+	privateBuildTree(rootData, null, null);
+}    
+public void buildTree(T rootData,
+	BinaryTreeInterface < T > left,
+	BinaryTreeInterface < T > right) {
+	privateBuildTree(rootData,(BinaryTree<T>)left,(BinaryTree<T>)right);
+}    
+```
+
+ #### Traversing the Tree
+ In a linear data structure, it is very easy to traverse it from start to end using a typical interation. However, for a non-linear data structures, there are multiple methods to implement traversal. In a general binary tree there is: **Pre-order, in-order, post-order, level-order** traversal.
++ Pre-order Traversal: We visit root before we visit the root's subtree
+	+ Think Left-touch
+```Java
+public void preorderTraverse() {
+	preorderTraverse(root);
+}
+private void preorderTraverse(BinaryNode < T > root) {
+	if (root != null) {
+		//visit the root
+		System.out.println(root.getData());
+		//left
+		preorderTraverse(root.getLeftChild());
+		//right
+		preorderTraverse(root.getRightChild());
+	}
+}
+```
+- In-order Traversal: We visit the left subtree, root, then right subtree
+	- Think bottom-touch
+```Java
+public void inorderTraverse() {
+	inorderTraverse(root);
+}
+private void inorderTraverse(BinaryNode < T > root) {
+	if (root != null) {
+		//left
+		inorderTraverse(root.getLeftChild());
+		//visit the root
+		System.out.println(root.getData());
+		//right
+		inorderTraverse(root.getRightChild());
+		//have you seen about time?
+	}
+}
+```
+ * Post-order Traversal: We visit the left subtree, right subtree, then root 
+	 * Think Right-touch
+```Java
+public void postorderTraverse() {
+	postorderTraverse(root);
+}
+private void postorderTraverse(BinaryNode < T > root) {
+	if (root != null) {
+		//left
+		postorderTraverse(root.getLeftChild());
+		//right
+		postorderTraverse(root.getRightChild());
+		//visit the root
+		System.out.println(root.getData());
+	}
+}
+```
+ * Level-order Traversal: We begin at the root and visit nodes one level at a time. (Implementation to come later - See Breadth-First Search of Graphs).
+
+Note that we call a recursive function which recurses on the last line, to be **tail-recursive**. This is important because many compilers can automatically convert tail-recursive functions into iterative functions(which are often faster).
+
+The run-time of traversal will clearly be linear time.
