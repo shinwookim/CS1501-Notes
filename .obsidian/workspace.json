@@ -1,0 +1,155 @@
+{
+  "main": {
+    "id": "66d802f4a2d902d7",
+    "type": "split",
+    "children": [
+      {
+        "id": "cfa2a1804a1ca84a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c84600c593a03f3a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Week 5 Lecture.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "59cf799117640807",
+    "type": "split",
+    "children": [
+      {
+        "id": "4a4f1ec7b7262c9f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "02923c8728cbab07",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "da1f1a7a64b4d2c3",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "8aab64304869048c",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "c5e4bc8377206dbd",
+    "type": "split",
+    "children": [
+      {
+        "id": "33191753c5bbbd90",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cffb8b86b3cae3aa",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Week 5 Lecture.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "098aa1e3bf573c69",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Week 5 Lecture.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "92ed2df4b4a122b4",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "9d90e7a3242aee9a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Week 5 Lecture.md"
+              }
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "ribbon": {
+    "mostRecentAction": ""
+  },
+  "active": "c84600c593a03f3a",
+  "lastOpenFiles": [
+    "Assets/Week5/RWayRST.png",
+    "Week 5 Lecture.md",
+    "Week 6 Lecture.md",
+    "Week 2 Lecture.md",
+    "Week.md",
+    "Assets/Week5/RST.png",
+    "Assets/Week5/DST.png",
+    "Week 4 Lecture.md",
+    "Week 3 Lecture.md",
+    "Searching Problem.md"
+  ]
+}
