@@ -1,23 +1,23 @@
 # Week 1: Intro Materials + Pruning, Recursion, and Backtracking
+
 ## Modeling Runtime of Algorithms
 ### Example: ThreeSum Problem
 Consider the ThreeSum Problem: Given a set of arbitrary integers find out how many **distinct** triples sum to exactly zero.
 
 Before we begin, we must ask questions on the problem specifications such as: "*What does **distinct** mean in this problem?*", "*Is the data sorted?*", "*What is the input data size*", etc.
 
-E.g., 
-Example Input: 5, -1, 2, -3, -2, 1, 0.
-For this set of inputs, our output should be 4 [(5, -2, -3), (-1, 0, 1,), (2, 0, -2), (-3, 1, 2)].
+*E.g.,* 
+```
+Input: [5, -1, 2, -3, -2, 1, 0]
+Output: 4 [(5, -2, -3), (-1, 0, 1,), (2, 0, -2), (-3, 1, 2)]
+```
 
 One possible solution is the **brute-force** solution: We enumerate all possible distinct triples and check their sums.
-```PSEUDOCODE
-cnt = 0
-	for each distinct triple
-		if sum of triple equals zero
-			increment cnt 
-```
-Java Implementation:
-```Java
+* Let count = 0
+* Then, for each *distinct* triple
+	+ if sum of the triples equals zero
+		+ increment count
+```Java		
 public static int count(int[] a){
 	int n = a.length;
 	int cnt = 0;
@@ -30,34 +30,35 @@ public static int count(int[] a){
 				}
 			}
 		}
-	} return cnt;
+	}
+	return cnt;
 }
 ```
-
-Note that this is a valid solution only when the input integers are **distinct**. When the input integers are not distinct(*i.e, when there are duplicates*), `count(int[] a)` will find many solutions with the same values (because they are different instances of the same values). Therfore, we would need to chnage the defintion of the problem.
++ Note that this is a valid solution only when the input integers are **distinct**. When the input integers are not distinct (*i.e, when there are duplicates*), `count(int[] a)` will find many solutions with the same values (because they are different instances of the same values). 
 
 ### Algorithm Analysis
-How can we determine how much time it takes for this program to run? One way would be to write the program, compile, then run it to measure the *actual* run-time of the program on a given set of values. However, if the implementation is complicated (or time-consuming), we would be wasting time and money if we implemented it just to find out that the program's run-time is too long.
+How can we determine how much time it takes for this program to run? One way would be to write the program, compile, then run it to measure the *actual run-time* of the program on a given set of values. However, if the implementation is complicated (or time-consuming), we would be wasting time and money if we implemented it just to find out that the program's run-time is too long. 
 
-What if the algorithm is taking a really long time when running? Could we know if the algorithm is just really slow? or is there a bug in the program? 
+Next, consider an algorithm implementation that is taking a really long time to run. Is it possible for us to determine whether our algorithm is supposed to be very slow or a bug in the program? I.e, can we predict the run-time of the program before or without actually running it?
 
-Therefore, we want to to be able to predict the run-time of the program before or without actually running it. To do this, we can mathematically model the run-time using the method pioneered by [Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth).
+The answer is yes, and we can do this by mathematically modeling the run-time using the method pioneered by [Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth).
 
 In the 1970s, Donald Knuth devised a way to calculate run-time using two factors:
 1. **Cost** of executing each statement - determined by the machine used, environment running on the machine, etc.
-2.  **Frequency** of execution of each statement - determined by program and input
+2. **Frequency** of execution of each statement - determined by program and input
+$$\text{Runtime}=\sum_{\verb|all statements|}{(\text{Cost}\times\text{Frequency})}$$
 
-In fact, we can model the run-time of algorithms using: $\sum_{\verb|all statements|}{\text{Cost}\times\text{Frequency}}$.
-However, since our program might have a lot of statements, we can split the algorithm into blocks such that the code statements in each block have the same frequency: $\sum_{\verb|all blocks|}{\text{Cost}\times\text{Frequency}}$.
-
+But our program may be very long with many statements. Thus it is ineffcient to analyze our program line-by-line. Instead, we can split the algorithm into blocks such that the code statements in each block have the same frequency: $$\text{Runtime}=\sum_{\verb|all blocks|}{\text{Cost}\times\text{Frequency}}$$
 #### Example 1: Simple Loop
 ```Java
 for(int i = 0; i < n; i++){
     a[i] = i;
 }
 ```
-The code can be divided into 3 blocks: `(i = 0;`, `i < n;`, and `i++) { a[i] = i; }`.
-The first block(`i = 0`) runs only once at the start of the loop. The second block(`i < n`) runs $n+1$ times(because the comparison occurs one more time after the final interation of the loop); and the third inner block(`i++) { a[i] = i; }`) runs $n$ times.
+The code can be divided into 3 blocks: 
+1. `(i = 0;` This block of code runs only once at the start of the loop.
+2. `i < n;` This block of code runs $n+1$ times (because the comparison occurs one more time after the final iteration of the loop).
+3. `i++) { a[i] = i; }`. This code block runs $n$ times.
 
 #### Example 2: Loop with Conditional
 ```Java
@@ -67,24 +68,26 @@ if(x > 0){
     }
 }
 ```
-Now, the code can still be divided into 3 blocks: `if(x > 0)`, `for(int i = 0;`, and `i < n; i++) { a[i] = i; }`.
+The code can still be divided into 3 blocks:
+1. `if(x > 0)` This block always execute once.
+2. `for(int i = 0;` The code in this block either runs once (if `x > 0`), or 0 times (if `x <= 0`).
+3. `i < n; i++) { a[i] = i; }`. The code in this block runs either 0 times or $n$ times depending on the if statement in the first block.
+	+ _Techincally,_ `i < n` runs $n+1$ times(if it runs), but the difference is minimal for large values of $n$ and we can group them together for easier analysis.
+Notice now there is variation in the possible run-time: $1\times \text{Cost}_1$ or $1\times\text{Cost}_1+1\times\text{Cost}_2+n\times\text{Cost}_3$. 
+I.e., we have a ***best-case*** run-time and a ***worst-case*** run-time.
 
-The first block (`if(x > 0)`) always executes once. The second block(`for(int i = 0;`) can run either once (if x > 0), or 0 times. The last block (`i < n; i++) { a[i] = i; }`) can run either 0 times, or $n$ times depending on the statement in the first block. (_Techincally,_ `i < n` runs $n+1$ times(if it runs), but the difference is minimal for large values of $n$; Thus, we can group them together for easier analysis).
-
-Now, there is variation in the possible run-time: $1\times \text{Cost}_1$ or $1\times\text{Cost}_1+1\times\text{Cost}_2+n\times\text{Cost}_3$. I.e., we have a ***best-case*** run-time and a ***worst-case** run-time.
-
-#### Example 3: Loop (i / 2)
+#### Example 3: Loop (`i / 2`)
 ```Java
 for (i = n; i >= 1; i = i/2){
 	a[i] = i;
 }
 ```
-There are two blocks in this code: `i = n` and `i >= 1; i = i/2){ a[i] = i; }`.
-The first block (`i = n`) runs only once, at the start of the loop. The second block will run $\log_2{n}$ times.
+There are two blocks in this code:
+1. `for (i = n`  This blocks runs only once at the start of the loop
+2. `i >= 1; i = i/2){ a[i] = i; }`. This block runs $\log_2n$ times.
 
 ### Improving ThreeSum Algorithm
-So how can we use this knowledge to improve the ThreeSum problem? 
-Let's first analyze our ThreeSum Algorithm:
+So let us now use this knowledge to analyze and improve our ThreeSum algorithm.
 ![ThreeSum Code](Assets/Week1/ThreeSum_Code_Highlight.png)
 | Block | Frequency | Cost |
 |-------|-----------|------|
@@ -93,6 +96,7 @@ Let's first analyze our ThreeSum Algorithm:
 |Blue|$\frac{n^2}{2}−\frac{n}{2}$ <sup>1</sup>|$t_2$|
 |Red|$\frac{n^3}{6}-\frac{n^2}{2}+\frac{n}{3}$<sup>2</sup>|$t_3$|
 |Purple|$x$ <sup>3</sup>|$t_4$|
+
 <sup>1</sup> $(n-1)+(n-2)+(n-3)+...+1=\frac{n-1}{2}(n-1+1)=\frac{n^2}{2}-\frac{n}{2}$
 <sup>2</sup> $C(n,3)=\frac{n!}{(n-3)!3!}=\frac{n^3}{6}-\frac{n^2}{2}+\frac{n}{3}$ 
 <sup>3</sup>  $x:=\text{the number of triples that sum to 0 in the input array};\ \text{for}\ 0\leq x \leq C(n,3)$
@@ -103,14 +107,14 @@ Recall the bounds for $x$ ($0 \leq x \leq C(n,3)$) which means:
 1) Best-case: $x=0$ $$\frac{t_3}{6}n^3+(\frac{t_2}{2}-\frac{t_3}{2})n^2 + (\frac{t_3}{3}-\frac{t_2}{2}+t_1)n+t_0$$
 2) Worst-cast: $x=C(n,3)$$$\frac{t_3}{6}n^3+(\frac{t_2}{2}-\frac{t_3}{2})n^2 + (\frac{t_3}{3}-\frac{t_2}{2}+t_1)n+t_0+t_4(\frac{n^3}{6}-\frac{n^2}{2}+\frac{n}{3})$$
 ### Asymptotic Analysis
-Notice that  our result from above is really ugly and we don't always want to consider all the terms and constants. So instead, we can use **Asymptotic Analysis**. To do this, we must:
+Notice that  our result from above is really complex and we don't always want to consider all the terms and constants. Instead to simplify things, we can use **Asymptotic Analysis**. To do this, we must:
 1) determine _resource usage_ as a function of _input size_, as we did in ThreeSum.
 2) Then, we measure the **_asymptotic_** performance (i.e., the performance as input size increases to infinity).
 
 Specifically, we want to focus on the **order of growth** of functions, not on exact values. What is *order of growth*? It captures how fast the function values increases when the input increases; in particular for a function $T(n)$.
-	For example, we want to know: *when $n$ doubles, does $T(n)$ essentialy*: stay constant? increase by a constant? double? quadruple? increase eightfold? etc.
++ For example, we want to know: *when $n$ doubles, does $T(n)$ essentialy*: stay constant? increase by a constant? double? quadruple? increase eightfold? etc.
 We don't really care as much about the exact value of $T(n)$.
-	Note we use $T(n)$ instead of $f(x)$ because $T$ stands for (running) time and $n$ signifies that the input is a positive integer.
++ Note we use $T(n)$ instead of $f(x)$ because $T$ stands for (running) time and $n$ signifies that the input is a positive integer.
 
 Some common orders of growth we will use is:
 | Orders of Growth | Meaning |
